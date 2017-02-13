@@ -1,14 +1,17 @@
 #!/bin/bash
-# Paul attempt at vagrant init file.
 
-apt-get update && apt-get upgrade
-apt-get install -y wget
+# Update system
+apt-get update && apt-get upgrade -y
+apt-get install -y wget git vim
 
+# Install frills
+apt-get install -y screenfetch
+
+# Prepare (insecure) base box vagrant user
 mkdir -pm 700 /home/vagrant/.ssh
 chown -R vagrant:vagrant /home/vagrant/.ssh
 
-echo "started script" >> /home/vagrant/delme.txt
-
+# Grab the vagrant base box user public key
 sudo -u vagrant wget --no-check-certificate https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -O /home/vagrant/.ssh/authorized_keys
 chmod 0600 /home/vagrant/.ssh/authorized_keys
 
@@ -25,7 +28,12 @@ sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 # Disable daily apt unattended updates.
 echo 'APT::Periodic::Enable "0";' >> /etc/apt/apt.conf.d/10periodic
 
-# Customize the message of the day
-echo 'Well this did something then? Woot.' > /etc/motd
+# Copy files made by file provisioner 
+chown root:root /tmp/bash.bashrc
+chmod 644 /tmp/bash.bashrc
+mv /tmp/bash.bashrc /etc/bash.bashrc
+chown vagrant:vagrant /tmp/.vim
+cp /tmp/.vim /home/vagrant
 
-echo "finished script" >> /home/vagrant/delme.txt
+# Customize the message of the day
+# echo 'Welcome' > /etc/motd

@@ -1,2 +1,5 @@
-builds
+/parallels
+/temp/
+/virtualbox
 packer_cache
+*.box 
