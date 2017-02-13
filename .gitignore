@@ -1,3 +1,4 @@
+.vagrant
 /build
 /temp/
 packer_cache

@@ -11,7 +11,7 @@
     {
         "output_directory": "build/virtualbox",
 
-        "headless": false,
+        "headless": true,
         "type": "virtualbox-iso",
         "guest_os_type": "Ubuntu_64",
         "vboxmanage": [
@@ -144,7 +144,13 @@
       },
       {
         "type"  : "shell",
-        "script": "shell/init.sh",
+        "environment_vars": [
+          "HOME_DIR=/home/vagrant"
+        ],
+        "scripts": [
+          "shell/init.sh",
+          "shell/cleanup.sh"
+        ],
         "execute_command": "echo '{{user `ssh_pass`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"
       }
    ],
