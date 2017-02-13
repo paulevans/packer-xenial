@@ -1,5 +1,4 @@
-/parallels
+/build
 /temp/
-/virtualbox
 packer_cache
 *.box 

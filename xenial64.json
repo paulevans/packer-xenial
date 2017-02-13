@@ -8,9 +8,8 @@
   },
 
   "builders":[
-    {   
-        "name": "{{user `hostname`}}_virtualbox",
-        "output_directory": "virtualbox",
+    {
+        "output_directory": "build/virtualbox",
 
         "headless": false,
         "type": "virtualbox-iso",
@@ -70,7 +69,6 @@
         ]
       },
       {
-        "name": "{{user `hostname`}}_parallels",
         "type": "parallels-iso",
         "guest_os_type": "ubuntu",
         "parallels_tools_flavor": "lin",
@@ -89,7 +87,7 @@
           ]
         ],
 
-        "output_directory": "parallels",
+        "output_directory": "build/parallels",
         "iso_url": "http://releases.ubuntu.com/16.04/ubuntu-16.04.1-server-amd64.iso",
         "iso_checksum_type": "sha256",
         "iso_checksum": "29a8b9009509b39d542ecb229787cdf48f05e739a932289de9e9858d7c487c80",
@@ -137,12 +135,12 @@
       {
         "type": "file",
         "source": "files/.vim",
-        "destination": "/tmp/.vim"
+        "destination": "/home/vagrant/tmp.vim"
       },
       {
         "type": "file",
         "source": "files/bash.bashrc",
-        "destination": "/tmp/bash.bashrc"
+        "destination": "/home/vagrant/tmp.bash.bashrc"
       },
       {
         "type"  : "shell",
@@ -154,6 +152,7 @@
    "post-processors":[
     {
       "type": "vagrant",
+      "output": "{{user `hostname`}}_{{.Provider}}.box",
       "override": {
         "parallels": {
           "compression_level": 9

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Update system
-apt-get update && apt-get upgrade -y
+apt-get update && apt-get dist-upgrade -y
 apt-get install -y wget git vim
 
 # Install frills
@@ -9,7 +9,10 @@ apt-get install -y screenfetch
 
 # Prepare (insecure) base box vagrant user
 mkdir -pm 700 /home/vagrant/.ssh
-chown -R vagrant:vagrant /home/vagrant/.ssh
+
+# Make sure home directory and contents is owned by vagrant
+chown -R vagrant:vagrant /home/vagrant
+chmod 755 /home/vagrant
 
 # Grab the vagrant base box user public key
 sudo -u vagrant wget --no-check-certificate https://raw.github.com/mitchellh/vagrant/master/keys/vagrant.pub -O /home/vagrant/.ssh/authorized_keys
@@ -29,11 +32,12 @@ sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 echo 'APT::Periodic::Enable "0";' >> /etc/apt/apt.conf.d/10periodic
 
 # Copy files made by file provisioner 
-chown root:root /tmp/bash.bashrc
-chmod 644 /tmp/bash.bashrc
-mv /tmp/bash.bashrc /etc/bash.bashrc
-chown vagrant:vagrant /tmp/.vim
-cp /tmp/.vim /home/vagrant
+mv /home/vagrant/tmp.bash.bashrc /etc/bash.bashrc
+chown root:root /etc/bash.bashrc
+chmod 644 /etc/bash.bashrc
+
+mv /home/vagrant/tmp.vim /home/vagrant/.vim
+chown vagrant:vagrant /home/vagrant/.vim
 
 # Customize the message of the day
 # echo 'Welcome' > /etc/motd

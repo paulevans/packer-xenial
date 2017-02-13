@@ -2,11 +2,18 @@
 
 A sparse VM for Vagrant via Packer that is updated when created. Only a few extra packages I personally find useful right now.
 
+Other types of boxes may come later if I can test them.  I do not own vmware.
+
 ## Prerequistes
 Install vagrant.
 
 ## Packer
-packer build xenial64_virtualbox.json
+packer build xenial64.json
+
+You may only want to build a particular flavour (VirtualBox or Parallels).  For this:
+
+*  packer build --only=parallels-iso xenial64.json
+*  packer build --only=virtualbox-iso xenial64.json
 
 ### Virtual Box
 Install vbguest plugin:
