@@ -19,6 +19,10 @@ Vagrant.configure("2") do |config|
     vb.gui = true
   end
 
+  config.vm.define "event-store" do |machine|
+    machine.vm.network "private_network", ip: "192.168.222.222"
+  end
+
   # NOTE: Left generated comments in place for reference.
 
   # The most common configuration options are documented and commented below.

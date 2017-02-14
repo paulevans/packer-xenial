@@ -13,6 +13,7 @@
 
         "headless": true,
         "type": "virtualbox-iso",
+        "guest_additions_mode": "upload",
         "guest_os_type": "Ubuntu_64",
         "vboxmanage": [
           [ "modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}" ],
@@ -146,6 +147,11 @@
         "type": "file",
         "source": "files/eventstore.conf",
         "destination": "/home/vagrant/tmp.eventstore.conf"
+      },
+      {
+        "type": "file",
+        "source": "files/eventstore.service",
+        "destination": "/home/vagrant/tmp.eventstore.service"
       },
       {
         "type"  : "shell",

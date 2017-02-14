@@ -1,0 +1,13 @@
+[Unit]
+Description=Event Store Open Source
+
+[Service]
+ExecStart=/usr/bin/eventstored
+Group=eventstore
+User=eventstore
+Restart=on-failure
+RestartSec=1min
+Type=simple
+
+[Install]
+WantedBy=multi-user.target

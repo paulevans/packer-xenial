@@ -16,7 +16,7 @@ You may only want to build a particular flavour (VirtualBox or Parallels).  For 
 *  packer build --only=virtualbox-iso xenial64.json
 
 ### Virtual Box
-Install vbguest plugin:
+Install vbguest plugin - this helps keep the file sharing between host and guest up to date.
   * vagrant plugin install vagrant-vbguest
   * vagrant up --provider=virtualbox
 

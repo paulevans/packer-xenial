@@ -2,7 +2,7 @@
 # Script attempts to remove cruft caused by installation and make image easier to compress.
 
 # Remove any left over files copied by the file provisioner
-rm -rf /home/vagrant/tmp.eventstore.conf
+rm -rf /home/vagrant/tmp.*
 
 # Remove Ubutnu metrics packages
 apt-get -y purge popularity-contest installation-report 
@@ -23,7 +23,8 @@ apt-get -y autoremove
 apt-get -y clean
 
 # Remove virtual tools images
-rm -rf prl-tools-lin.iso VBoxGuestAdditions.iso VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?
+# ... these might actually need to stick around. Having trouble with them being missing when running packer on Windows.
+# rm -rf prl-tools-lin.iso VBoxGuestAdditions.iso VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?
 
 # Remove list of packages will get downloaded from the Ubuntu servers
 rm -rf /var/lib/apt/lists/*
