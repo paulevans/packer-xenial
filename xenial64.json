@@ -34,7 +34,7 @@
         "ssh_port": 22,
         "ssh_username": "{{user `ssh_name`}}",
         "ssh_password": "{{user `ssh_pass`}}",
-        "ssh_wait_timeout": "20m",
+        "ssh_wait_timeout": "45m",
 
         "shutdown_command": "echo {{user `ssh_pass`}} | sudo -S shutdown -P now",
 
@@ -143,12 +143,18 @@
         "destination": "/home/vagrant/tmp.bash.bashrc"
       },
       {
+        "type": "file",
+        "source": "files/eventstore.conf",
+        "destination": "/home/vagrant/tmp.eventstore.conf"
+      },
+      {
         "type"  : "shell",
         "environment_vars": [
           "HOME_DIR=/home/vagrant"
         ],
         "scripts": [
           "shell/init.sh",
+          "shell/install-app.sh",
           "shell/cleanup.sh"
         ],
         "execute_command": "echo '{{user `ssh_pass`}}' | sudo -S sh -c '{{ .Vars }} {{ .Path }}'"

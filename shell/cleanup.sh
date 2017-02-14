@@ -1,14 +1,14 @@
 #!/bin/bash -eux
 # Script attempts to remove cruft caused by installation and make image easier to compress.
 
+# Remove any left over files copied by the file provisioner
+rm -rf /home/vagrant/tmp.eventstore.conf
+
 # Remove Ubutnu metrics packages
 apt-get -y purge popularity-contest installation-report 
 
 # Remove X11 libraries (headless after all)
 apt-get -y purge libx11-data xauth libxmuu1 libxcb1 libx11-6 libxext6;
-
-# Remove obsolete networking (we do not need backward compatibility here)
-apt-get -y purge ppp pppconfig pppoeconf;
 
 # Delete docs packages (extended docs)
 # dpkg --list \
@@ -24,6 +24,12 @@ apt-get -y clean
 
 # Remove virtual tools images
 rm -rf prl-tools-lin.iso VBoxGuestAdditions.iso VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?
+
+# Remove list of packages will get downloaded from the Ubuntu servers
+rm -rf /var/lib/apt/lists/*
+
+# Remove temp folders 
+rm -rf /tmp/* /var/tmp/*
 
 # Remove caches
 find /var/cache -type f -exec rm -rf {} \;
