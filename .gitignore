@@ -3,3 +3,4 @@
 /temp/
 packer_cache
 *.box 
+*.stackdump

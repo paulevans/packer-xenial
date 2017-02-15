@@ -2,7 +2,7 @@
 # Script attempts to remove cruft caused by installation and make image easier to compress.
 
 # Remove any left over files copied by the file provisioner
-rm -rf /home/vagrant/tmp.*
+# rm -rf /home/vagrant/tmp.*
 
 # Remove Ubutnu metrics packages
 apt-get -y purge popularity-contest installation-report 

@@ -1,5 +1,6 @@
 [Unit]
 Description=Event Store Open Source
+After=network.target
 
 [Service]
 ExecStart=/usr/bin/eventstored

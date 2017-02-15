@@ -20,12 +20,28 @@ else
     apt-get install -y eventstore-oss=$ES_PRERELEASE_VERSION
 fi
 
-chown root:root /home/vagrant/tmp.eventstore.conf
-chmod 644 /home/vagrant/tmp.eventstore.conf
-mv /home/vagrant/tmp.eventstore.conf /etc/eventstore.conf
+sync
 
-chown root:root /home/vagrant/tmp.eventstore.service
-chmod 644 /home/vagrant/tmp.eventstore.service
-mv /home/vagrant/tmp.eventstore.service /lib/systemd/system/eventstore.service
+systemctl daemon-reload
+systemctl enable eventstore.service
+systemctl stop eventstore.service
+systemctl show eventstore.service
 
-rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+chown eventstore:eventstore /home/vagrant/tmp.eventstore.conf
+chmod 664 /home/vagrant/tmp.eventstore.conf
+cp -rf /home/vagrant/tmp.eventstore.conf /etc/eventstore/eventstore.conf
+echo Contents of /etc/eventstore/eventstore.conf:
+cat /etc/eventstore/eventstore.conf
+# rm -rf /home/vagrant/tmp.eventstore.conf
+
+cp -rf /home/vagrant/tmp.eventstore.service /etc/systemd/system/eventstore.service
+chown root:root /etc/systemd/system/eventstore.service
+chmod 664 /etc/systemd/system/eventstore.service
+echo Contents of /etc/systemd/system/eventstore.service:
+cat /etc/systemd/system/eventstore.service
+# rm -rf /home/vagrant/tmp.eventstore.service
+
+# rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Even small files seem to be going missing on Windows running packer.  Try sync.
+sync
