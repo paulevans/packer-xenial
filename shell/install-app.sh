@@ -7,36 +7,47 @@
 ES_VERSION=3.9.3
 ES_PRERELEASE_VERSION=4.0.0-alpha3
 ES_USE_PRERELEASE=1
+ES_SERVICE_SRC=/tmp/eventstore.service
+ES_SERVICE_DEST=/etc/systemd/system/eventstore.service
 
-apt-get install -y curl 
+#TODO: In packer I just cannot get these files to stick :( :(  They seem to not be there by the time of vagrant ssh
+# Create service
+cp -f $ES_SERVICE_SRC $ES_SERVICE_DEST
+chown root:root $ES_SERVICE_DEST
+chmod 664 $ES_SERVICE_DEST
 
-if [ -z ${ES_USE_PRERELEASE+x} ]; then 
-    echo Use EventStore-OSS release
-    curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS/script.deb.sh | sudo bash 
-    apt-get install -y eventstore-oss=$ES_VERSION
-else 
-    echo Use EventStore-OSS pre-release
-    curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS-PreRelease/script.deb.sh | sudo bash
-    apt-get install -y eventstore-oss=$ES_PRERELEASE_VERSION
-fi
+#echo Contents of $ES_SERVICE_DEST
+#cat $ES_SERVICE_DEST
 
-mkdir -pm 755 /etc/systemd/system/multi-user.target.wants
-cp -f /tmp/eventstore.service /etc/systemd/system/multi-user.target.wants/eventstore.service
-chown root:root /etc/systemd/system/multi-user.target.wants/eventstore.service
-chmod 664 /etc/systemd/system/multi-user.target.wants/eventstore.service
-echo Contents of /etc/systemd/system/multi-user.target.wants/eventstore.service:
-cat /etc/systemd/system/multi-user.target.wants/eventstore.service
-
+# Copy dev config from host to guest.
 mkdir -pm 755 /etc/eventstore
 cp -f /tmp/eventstore.conf /etc/eventstore/eventstore.conf
 chown -R eventstore:eventstore /etc/eventstore
 chmod 754 /etc/eventstore/eventstore.conf
 
-echo Contents of /etc/eventstore/eventstore.conf:
-cat /etc/eventstore/eventstore.conf
-
-# Even small files seem to be going missing on Windows running packer.  Try sync.
+# Flush all file ops... hopefully.
 sync
 
+apt-get install -y curl 
+
+if [ -z ${ES_USE_PRERELEASE+x} ]; then 
+    echo Use EventStore-OSS release
+    curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS/script.deb.sh -o /tmp/eventstore-install.sh
+    /tmp/eventstore-install.sh
+    apt-get install -y eventstore-oss=$ES_VERSION
+else 
+    echo Use EventStore-OSS pre-release
+    curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS-PreRelease/script.deb.sh -o /tmp/eventstore-install.sh
+    /tmp/eventstore-install.sh
+    apt-get install -y eventstore-oss=$ES_PRERELEASE_VERSION
+fi
+
+#echo Contents of /etc/eventstore/eventstore.conf:
+#cat /etc/eventstore/eventstore.conf
+
+# Reload systemd to pick up eventstore.service file.
 systemctl daemon-reload
+# strace systemctl enable eventstore.service
 systemctl enable eventstore.service
+# Make sure any extra state from systemd is flushed
+systemctl daemon-reload

@@ -49,8 +49,3 @@ chown vagrant:vagrant /home/vagrant/.vim
 
 # Customize the message of the day
 # echo 'Welcome' > /etc/motd
-
-# Quick cleanup
-apt-get -y autoremove
-apt-get -y autoclean
-apt-get check
