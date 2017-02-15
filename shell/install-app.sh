@@ -10,6 +10,18 @@ ES_USE_PRERELEASE=1
 ES_SERVICE_SRC=/tmp/eventstore.service
 ES_SERVICE_DEST=/etc/systemd/system/eventstore.service
 
+apt-get install -y curl 
+
+if [ -z ${ES_USE_PRERELEASE+x} ]; then 
+    echo Use EventStore-OSS release
+    source <(curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS/script.deb.sh)
+    apt-get install -y eventstore-oss=$ES_VERSION
+else 
+    echo Use EventStore-OSS pre-release
+    source <(curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS-PreRelease/script.deb.sh)
+    apt-get install -y eventstore-oss=$ES_PRERELEASE_VERSION
+fi
+
 #TODO: In packer I just cannot get these files to stick :( :(  They seem to not be there by the time of vagrant ssh
 # Create service
 cp -f $ES_SERVICE_SRC $ES_SERVICE_DEST
@@ -27,20 +39,6 @@ chmod 754 /etc/eventstore/eventstore.conf
 
 # Flush all file ops... hopefully.
 sync
-
-apt-get install -y curl 
-
-if [ -z ${ES_USE_PRERELEASE+x} ]; then 
-    echo Use EventStore-OSS release
-    curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS/script.deb.sh -o /tmp/eventstore-install.sh
-    /tmp/eventstore-install.sh
-    apt-get install -y eventstore-oss=$ES_VERSION
-else 
-    echo Use EventStore-OSS pre-release
-    curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS-PreRelease/script.deb.sh -o /tmp/eventstore-install.sh
-    /tmp/eventstore-install.sh
-    apt-get install -y eventstore-oss=$ES_PRERELEASE_VERSION
-fi
 
 #echo Contents of /etc/eventstore/eventstore.conf:
 #cat /etc/eventstore/eventstore.conf
