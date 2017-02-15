@@ -14,11 +14,13 @@ apt-get install -y curl
 
 if [ -z ${ES_USE_PRERELEASE+x} ]; then 
     echo Use EventStore-OSS release
-    source <(curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS/script.deb.sh)
+    wget -O /tmp/eventstore.script.deb.sh https://packagecloud.io/install/repositories/EventStore/EventStore-OSS/script.deb.sh
+    /tmp/eventstore.script.deb.sh 
     apt-get install -y eventstore-oss=$ES_VERSION
 else 
     echo Use EventStore-OSS pre-release
-    source <(curl -s https://packagecloud.io/install/repositories/EventStore/EventStore-OSS-PreRelease/script.deb.sh)
+    wget -O /tmp/eventstore.script.deb.sh https://packagecloud.io/install/repositories/EventStore/EventStore-OSS-PreRelease/script.deb.sh
+    /tmp/eventstore.script.deb.sh 
     apt-get install -y eventstore-oss=$ES_PRERELEASE_VERSION
 fi
 
