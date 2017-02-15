@@ -7,8 +7,10 @@ sed -i.bak 's/^Prompt=.*$/Prompt=lts/' /etc/update-manager/release-upgrades;
 # Disable daily apt unattended updates.
 echo 'APT::Periodic::Enable "0";' >> /etc/apt/apt.conf.d/10periodic
 
+apt-get update
+
 #TODO: On fence about doing dist-upgrade rather than upgrade
-apt-get update && apt-get dist-upgrade -y
+apt-get dist-upgrade -y
 
 # Really useful software
 apt-get install -y wget curl git vim
@@ -38,11 +40,11 @@ sed -i -e 's/%sudo  ALL=(ALL:ALL) ALL/%sudo  ALL=NOPASSWD:ALL/g' /etc/sudoers
 sed -i "s/^.*requiretty/#Defaults requiretty/" /etc/sudoers
 
 # Copy files made by file provisioner 
-mv /home/vagrant/tmp.bash.bashrc /etc/bash.bashrc
+cp -f /tmp/bash.bashrc /etc/bash.bashrc
 chown root:root /etc/bash.bashrc
 chmod 644 /etc/bash.bashrc
 
-mv /home/vagrant/tmp.vim /home/vagrant/.vim
+cp -f /tmp/.vim /home/vagrant/.vim
 chown vagrant:vagrant /home/vagrant/.vim
 
 # Customize the message of the day

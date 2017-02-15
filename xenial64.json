@@ -135,23 +135,8 @@
    "provisioners": [
       {
         "type": "file",
-        "source": "files/.vim",
-        "destination": "/home/vagrant/tmp.vim"
-      },
-      {
-        "type": "file",
-        "source": "files/bash.bashrc",
-        "destination": "/home/vagrant/tmp.bash.bashrc"
-      },
-      {
-        "type": "file",
-        "source": "files/eventstore.conf",
-        "destination": "/home/vagrant/tmp.eventstore.conf"
-      },
-      {
-        "type": "file",
-        "source": "files/eventstore.service",
-        "destination": "/home/vagrant/tmp.eventstore.service"
+        "source": "files/",
+        "destination": "/tmp"
       },
       {
         "type"  : "shell",
