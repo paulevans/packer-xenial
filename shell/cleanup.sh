@@ -30,7 +30,8 @@ apt-get -y clean
 rm -rf /var/lib/apt/lists/*
 
 # Remove temp folders 
-rm -rf /tmp/* /var/tmp/*
+find /tmp/ -type f -not -name '*systemd*' -print0 | xargs -0 rm --
+find /var/tmp/ -type f -not -name '*systemd*' -print0 | xargs -0 rm --
 
 # Remove caches
 find /var/cache -type f -exec rm -rf {} \;
