@@ -1,16 +1,13 @@
 [Unit]
 Description=Event Store Open Source
-After=network.target auditd.service
+After=network-online.target remote-fs.target
 
 [Service]
 ExecStart=/usr/bin/eventstored
 KillMode=process
-Group=eventstore
 User=eventstore
 Restart=on-failure
-RestartSec=1min
 Type=simple
 
 [Install]
 WantedBy=multi-user.target
-Alias=eventstore.service

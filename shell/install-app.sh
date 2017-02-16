@@ -39,10 +39,10 @@ systemctl daemon-reload
 # Create service file for systemd that replaces /etc/init/eventstore.conf
 cp -f $ES_SERVICE_SRC $ES_SERVICE_DEST
 chown root:root $ES_SERVICE_DEST
-chmod 664 $ES_SERVICE_DEST
-
-#echo Contents of $ES_SERVICE_DEST
-#cat $ES_SERVICE_DEST
+chmod 764 $ES_SERVICE_DEST
+# I think systemd may delete a service on reload if there is no .d directory?
+# mkdir -pm 755 $ES_SERVICE_DEST.d
+# touch $ES_SERVICE_DEST.d/eventstore.conf
 
 # Copy dev config from host to guest.
 mkdir -pm 755 /etc/eventstore
@@ -58,7 +58,9 @@ sync
 
 # Reload systemd to pick up eventstore.service file.
 systemctl daemon-reload
+
+echo Contents of $ES_SERVICE_DEST
+cat $ES_SERVICE_DEST
+
 # strace systemctl enable eventstore.service
 systemctl enable eventstore.service
-# Make sure any extra state from systemd is flushed
-systemctl daemon-reload

@@ -1,9 +1,6 @@
 #!/bin/bash -eux
 # Script attempts to remove cruft caused by installation and make image easier to compress.
 
-# Remove any left over files copied by the file provisioner
-# rm -rf /home/vagrant/tmp.*
-
 # Remove Ubutnu metrics packages
 apt-get -y purge popularity-contest installation-report 
 
@@ -30,8 +27,9 @@ apt-get -y clean
 rm -rf /var/lib/apt/lists/*
 
 # Remove temp folders 
-find /tmp/ -type f -not -name '*systemd*' -print0 | xargs -0 rm --
-find /var/tmp/ -type f -not -name '*systemd*' -print0 | xargs -0 rm --
+#find /tmp/ -type f -not -name '*systemd*' -print0 | xargs -0 rm --
+#find /var/tmp/ -type f -not -name '*systemd*' -print0 | xargs -0 rm --
+rm -rf /tmp/* /var/tmp/*
 
 # Remove caches
 find /var/cache -type f -exec rm -rf {} \;
