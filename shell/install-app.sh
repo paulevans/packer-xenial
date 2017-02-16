@@ -32,5 +32,17 @@ fi
 rm -f /etc/init/eventstore.conf
 sync
 
-# Let systemctl know that that init file has gone?
-systemctl daemon-reload
+#TODO: In packer I just cannot get these files to stick :( :(  They seem to not be there by the time of vagrant ssh
+# Create service file for systemd that replaces /etc/init/eventstore.conf
+cp -f $ES_SERVICE_SRC $ES_SERVICE_DEST
+chown root:root $ES_SERVICE_DEST
+chmod 764 $ES_SERVICE_DEST
+# I think systemd may delete a service on reload if there is no .d directory?
+# mkdir -pm 755 $ES_SERVICE_DEST.d
+# touch $ES_SERVICE_DEST.d/eventstore.conf
+
+# Copy dev config from host to guest.
+mkdir -pm 755 /etc/eventstore
+cp -f /tmp/eventstore.conf /etc/eventstore/eventstore.conf
+chown -R eventstore:eventstore /etc/eventstore
+chmod 754 /etc/eventstore/eventstore.conf
