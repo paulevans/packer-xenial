@@ -9,7 +9,7 @@ ES_PRERELEASE_VERSION=4.0.0-alpha3
 ES_USE_PRERELEASE=1
 ES_SERVICE_SRC=/tmp/eventstore.service
 ES_SERVICE_DEST=/etc/systemd/system/eventstore.service
-#ES_SERVICE_DEST=/lib/systemd/system/eventstore.service
+ES_SERVICE_DEST2=/lib/systemd/system/eventstore.service
 
 apt-get install -y curl debhelper
 
@@ -36,7 +36,9 @@ sync
 # Create service file for systemd that replaces /etc/init/eventstore.conf
 cp -f $ES_SERVICE_SRC $ES_SERVICE_DEST
 chown root:root $ES_SERVICE_DEST
-chmod 764 $ES_SERVICE_DEST
+chmod 644 $ES_SERVICE_DEST
+cp -f $ES_SERVICE_DEST $ES_SERVICE_DEST2
+
 # I think systemd may delete a service on reload if there is no .d directory?
 # mkdir -pm 755 $ES_SERVICE_DEST.d
 # touch $ES_SERVICE_DEST.d/eventstore.conf

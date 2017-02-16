@@ -10,7 +10,7 @@ echo 'APT::Periodic::Enable "0";' >> /etc/apt/apt.conf.d/10periodic
 apt-get update
 
 #TODO: On fence about doing dist-upgrade rather than upgrade
-apt-get dist-upgrade -y
+# apt-get dist-upgrade -y
 
 # Really useful software
 apt-get install -y wget curl git vim
